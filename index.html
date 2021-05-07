@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html manifest="app.manifest"> 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>GlükIN Äpp</title>
+<meta name="apple-mobile-web-app-title" content="GlükIN Äpp">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!--<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />-->
+<!--<link rel="stylesheet" href="all.css">-->
+<link rel="apple-touch-icon" href="res/icon.png">
+<style type="text/css">
+html,body{padding:0;margin:0;}
+body{font-family: Arial, sans-serif; font-size:16px; background-color:#f7f7f7; -webkit-user-select:none; -webkit-tap-highlight-color:transparent;}
+a{text-decoration:none; color:gray;}
+#wrapper{position:absolute; width:100%; height:100%;}
+
+#panel{position:absolute; display:flex; flex-direction:row; font-size:19px; justify-content:space-between; align-items:center; width:inherit; height:45px; overflow:hidden; background-color:#636468; color:white; text-align:center; cursor:default;}
+#panel-bg{width:inherit; height:45px;}
+#panel #btn{width:45px; height:45px; cursor:pointer; background-color:#636468; display:flex; justify-content:center; align-items:center;}
+#panel #btn img{width:25px; height:25px;}
+#panel #btn:hover{opacity:0.7;}
+#panel .title{font-weight:500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+
+#list,#list2,#list3,#list4{width:100%; height:calc(100%); overflow-y:auto; -webkit-overflow-scrolling:touch; }
+#list3,#list4{text-align:center;}
+
+input[type=text]{width:calc(100% - 20px); margin-bottom:10px; background-color:#e8e8e8; border:1px solid #bcbcbc; outline:none; padding:10px; border-radius:10px; font-size:16px;}
+
+#content{margin:10px auto; width:calc(100% - 20px); magin:0 auto;}
+#content #title{margin:10px; text-align:center; font-size:18px;}
+#content #btn{width:100%; margin:5px auto; text-align:center; background-color:#03a89a; color:white; padding:12px 0; border-radius:10px;}
+#content #btn:active{background-color:#00867b;}
+
+#items{margin:10px auto; width:calc(100% - 20px); font-size:14px; border:1px solid #dadada; background-color:#eeeeee; oveflow:hidden;}
+#list #items #item{display:flex; flex-direction:row; justify-content:space-between; align-items:center; cursor:pointer; height:44px; border-bottom:1px solid #dfdfdf; overflow:hidden;}
+#list #items #item:hover{background-color:#ededed;}
+#list #items #item #title{margin-left:8px; margin-right:4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+#list #items #item #index{margin-right:10px; margin-left:4px; color:#454545; font-size:13px; white-space:nowrap; text-align:right; font-weight:bold;}
+#list #items #item:last-child{border-bottom:0;}
+
+#list2, #list3, #list4{display:none;}
+
+#gIndex{background-color:#49d214; margin-bottom:15px; font-size:15px; border:1px solid #3aa610; padding:5px;}
+#gWeight{border: 1px solid #dadada; background-color: #eeeeee; margin-bottom:15px; font-size:15px; padding:5px;}
+#image{display:flex; justify-content:center; margin-bottom:15px; border:1px solid #dadada; background-color:white;}
+#image img{max-height:175px; max-width:100%;}
+</style>
+<script type="text/javascript">
+var Items = [];
+
+//JOOGID
+Items[0] = ['0', 'JÕHVIKAMAHL', '56', '16', 'items/604b0d26.jpg'];
+Items[1] = ['0', 'KIRSIMAHL', '40', '0', 'items/de3500ba.jpg'];
+Items[2] = ['0', 'APRIKOOSIMAHL', '40', '14', 'items/c24240c1.jpg'];
+Items[3] = ['0', 'GREIPFRUUTIMAHL', '48', '0', 'items/b4c12450.jpg'];
+Items[4] = ['0', 'VIINAMARJAMAHL', '48', '0', 'items/279d886a.jpg'];
+Items[5] = ['0', 'COCA COLA,FANTA,SPRITE', '70', '0', 'items/72b708ef.jpg'];
+Items[6] = ['0', 'TOMATI MAHL', '54', '0', 'items/632bdccc.jpg'];
+Items[7] = ['0', 'DIEET COCA COLA', '53', '0', 'items/6c9cfab8.jpg'];
+Items[8] = ['0', 'APELSINI MAHL', '52', '5', 'items/9039ab25.jpg'];
+Items[9] = ['0', 'ÕUNAMAHL', '40', '-1', 'items/d76ad3bf.jpg'];
+Items[10] = ['0', 'TEE', '0', '0', 'items/50e28734.jpg'];
+Items[11] = ['0', 'MINERAALVESI', '0', '0', 'items/379e9b59.jpg'];
+
+//JAHUTOODED
+Items[12] = ['1', 'MANDLIJAHU', '0', '-1', 'items/c13402a1.jpg'];
+Items[13] = ['1', 'KOOKOSJAHU', '45', '3', 'items/c0883a34.jpg'];
+Items[14] = ['1', 'KAERAJAHU', '25', '-1', 'items/bb08c4f5.jpg'];
+Items[15] = ['1', 'TÄISTERA RUKKILEIB', '41', '5', 'items/7c8ff2c8.jpg'];
+Items[16] = ['1', 'NIISUJAHU', '70', '11,5', 'items/1132e244.jpg'];
+Items[17] = ['1', 'RIISIJAHU', '95', '30', 'items/4a9f4e60.jpg'];
+
+//KOOGIVILJAD
+Items[18] = ['2', 'AVOKAADO', '20', '1', 'items/ff669245.jpg'];
+Items[19] = ['2', 'KAALIKAS', '72', '6', 'items/2fe372c2.jpg'];
+Items[20] = ['2', 'SUVIKÕRVITS', '20', '0', 'items/1c5f0f14.jpg'];
+Items[21] = ['2', 'NAERIS', '15', '0', 'items/325c8f66.jpg'];
+Items[22] = ['2', 'HAPUOBLIKAS', '15', '0', 'items/8a310569.jpg'];
+Items[23] = ['2', 'TALISIBUL', '10', '0', 'items/81bfb08d.jpg'];
+Items[24] = ['2', 'PAPRIKA', '15', '0', 'items/a0498434.jpg'];
+Items[25] = ['2', 'TOMAT', '10', '0', 'items/0ef9b810.jpg'];
+Items[26] = ['2', 'PETERSELL', '15', '1', 'items/9dff9333.jpg'];
+Items[27] = ['2', 'BATAAT', '48', '10', 'items/6c607afb.jpg'];
+Items[28] = ['2', 'SPINAT', '15', '1', 'items/a795e314.jpg'];
+Items[29] = ['2', 'KUIVATATUD SOJAOA', '20', '0', 'items/fa5086a9.jpg'];
+Items[30] = ['2', 'REDIS', '15', '0', 'items/4aa18c65.jpg'];
+Items[31] = ['2', 'KÕRVITS', '75', '0', 'items/b99f3f60.jpg'];
+Items[32] = ['2', 'PASTINAAK', '97', '0', 'items/c6ebf02b.jpg'];
+Items[33] = ['2', 'SIBUL', '10', '0', 'items/4519ae44.jpg'];
+Items[34] = ['2', 'OLIIVID', '10', '0', 'items/33427369.jpg'];
+Items[35] = ['2', 'KARTULIPÜREE', '90', '-1', 'items/1d05d861.jpg'];
+Items[36] = ['2', 'LEHTSALAT', '10', '0', 'items/be9fc573.jpg'];
+Items[37] = ['2', 'LEHTKAPSAS', '3', '0', 'items/59d830c3.jpg'];
+Items[38] = ['2', 'AEDUBA', '30', '0', 'items/9b6a08f8.jpg'];
+Items[39] = ['2', 'INGVER', '15', '0', 'items/e1aa0eba.jpg'];
+Items[40] = ['2', 'ROHELINE HERNES', '40', '0', 'items/42615f34.jpg'];
+Items[41] = ['2', 'KÜÜSLAUG', '30', '0', 'items/0cbec049.jpg'];
+Items[42] = ['2', 'BAKLAZAAN', '15', '1', 'items/7dc77ee7.jpg'];
+Items[43] = ['2', 'KUIVATATUD HERNES', '22', '0', 'items/b4467754.jpg'];
+Items[44] = ['2', 'TIIL', '15', '0', 'items/1d1d60d1.jpg'];
+Items[45] = ['2', 'KURK', '51', '1', 'items/d5807a81.jpg'];
+Items[46] = ['2', 'KIKERHERNES', '30', '0', 'items/41860448.jpg'];
+Items[47] = ['2', 'VARSSELLER', '15', '0', 'items/24e78eec.jpg'];
+Items[48] = ['2', 'SELLER', '35', '0', 'items/f75f3278.jpg'];
+Items[49] = ['2', 'KEEDETUD LILLKAPSAS', '15', '0', 'items/16cb4e4b.jpg'];
+Items[50] = ['2', 'PORGAND', '35', '2', 'items/c5187197.jpg'];
+Items[51] = ['2', 'KAPSAS', '10', '0', 'items/bffe4a7c.jpg'];
+Items[52] = ['2', 'BRÜSSELI KAPSAS', '15', '0', 'items/bf67061e.jpg'];
+Items[53] = ['2', 'BROKOLI', '10', '0', 'items/8b0693b0.jpg'];
+Items[54] = ['2', 'KEEDETUD KARTUL', '70', '12', 'items/8d34a9c0.jpg'];
+Items[55] = ['2', 'KEEDETUD MAIS', '70', '0', 'items/25d8242d.jpg'];
+Items[56] = ['2', 'KEEDETUD PORGAND', '85', '0', 'items/49776f61.jpg'];
+Items[57] = ['2', 'MUSTAD OAD', '30', '0', 'items/f15616ec.jpg'];
+Items[58] = ['2', 'OAD', '42', '0', 'items/9f9680f6.jpg'];
+Items[59] = ['2', 'PEET', '64', '6', 'items/f0b8f5b7.jpg'];
+Items[60] = ['2', 'KÜPSETATUD KARTUL', '95', '-1', 'items/c7f69aed.jpg'];
+Items[61] = ['2', 'SPARGEL', '15', '1', 'items/01de7c0e.jpg'];
+Items[62] = ['2', 'ARTISOKK', '15', '2', 'items/eef991d5.jpg'];
+
+//MAIUSTUSED
+Items[63] = ['3', 'KARAMELL', '60', '-1', 'items/601e99a8.jpg'];
+Items[64] = ['3', 'SUHKUR', '70', '69,9', 'items/f46d6ba6.jpg'];
+Items[65] = ['3', 'MOOS', '70', '49', 'items/02dbc921.jpg'];
+Items[66] = ['3', 'SUHKRUVABA MOOS', '30', '22,8', 'items/89e56e73.jpg'];
+Items[67] = ['3', 'SARBETT', '40', '41,5', 'items/117f8f43.jpg'];
+Items[68] = ['3', 'KOOREJÄÄTIS', '52', '11', 'items/77ed0c62.jpg'];
+Items[69] = ['3', 'MESI', '90', '72', 'items/1881c2d7.jpg'];
+Items[70] = ['3', 'MUREKÜPSIS', '64', '49', 'items/17a8f5f9.jpg'];
+Items[71] = ['3', 'HALVAA', '70', '-1', 'items/f735de29.jpg'];
+Items[72] = ['3', 'FRUKTOOS', '20', '20', 'items/1da4e6ca.jpg'];
+Items[73] = ['3', 'TUME SOKOLAAD 60%', '22', '11,6', 'items/e4c61a5e.jpg'];
+Items[74] = ['3', 'PIIMASOKOLAAD', '60', '45,8', 'items/b561e4ab.jpg'];
+Items[75] = ['3', 'VAHUKOMMID', '62', '15', 'items/9af8221a.jpg'];
+
+//MARJAD
+Items[76] = ['4', 'ARBUUS', '72', '6', 'items/9ff5a192.jpg'];
+Items[77] = ['4', 'AROONIA', '25', '3', 'items/26ff3135.jpg'];
+Items[78] = ['4', 'ASTELPAJU', '30', '2', 'items/d972ffac.jpg'];
+Items[79] = ['4', 'DATLID', '102', '71', 'items/7f84dcd7.jpg'];
+Items[80] = ['4', 'FÜÜSAL', '15', '1', 'items/10c8b279.jpg'];
+Items[81] = ['4', 'GOJI MARJAD', '29', '13', 'items/3a1a760d.jpg'];
+Items[82] = ['4', 'KARUSMARI', '40', '4', 'items/973a993a.jpg'];
+Items[83] = ['4', 'KIBUVITSA MARJAD', '25', '10', 'items/4e669446.jpg'];
+Items[84] = ['4', 'KIRSS', '22', '3', 'items/7b5f1195.jpg'];
+Items[85] = ['4', 'KUSLAPUU MARJAD', '20', '2', 'items/3b0d1d16.jpg'];
+Items[86] = ['4', 'LOODJAPUU MARJAD', '25', '2', 'items/d03889ca.jpg'];
+Items[87] = ['4', 'MAASIKAS', '40', '3', 'items/a54a3c60.jpg'];
+Items[88] = ['4', 'MELON', '60', '4', 'items/71091ed9.jpg'];
+Items[89] = ['4', 'METSMAASIKA', '57', '4', 'items/a2063574.jpg'];
+Items[90] = ['4', 'MURAKAS', '25', '3', 'items/3f233728.jpg'];
+Items[91] = ['4', 'MUREL', '25', '4', 'items/72acb3e9.jpg'];
+Items[92] = ['4', 'MUST SÕSTAR', '25', '5', 'items/371358d2.jpg'];
+Items[93] = ['4', 'MUSTIKAS', '43', '6', 'items/2aeef271.jpg'];
+Items[94] = ['4', 'PIHLAKAS', '25', '2', 'items/f927cc1c.jpg'];
+Items[95] = ['4', 'POHLA', '29', '2', 'items/67fcf1cb.jpg'];
+Items[96] = ['4', 'PUNANE SÕSTAR', '30', '9', 'items/62cc0170.jpg'];
+Items[97] = ['4', 'ROSINAND', '64', '42', 'items/3e88867e.jpg'];
+Items[98] = ['4', 'SARAPUU MARJAD', '30', '4', 'items/b52a6e15.jpg'];
+Items[99] = ['4', 'SINIKAS', '25', '2', 'items/7178122c.jpg'];
+Items[100] = ['4', 'VAARIKAS', '30', '4', 'items/2d960009.jpg'];
+Items[101] = ['4', 'VALGE SÕSTAR', '43', '6', 'items/d5895c02.jpg'];
+Items[102] = ['4', 'VIBURNUM', '20', '1', 'items/86112465.jpg'];
+Items[103] = ['4', 'VIIGIMARI', '52', '10', 'items/274c512c.jpg'];
+Items[104] = ['4', 'VIINAMARJAD', '46', '8', 'items/7393a6de.jpg'];
+
+//PUUVILJAD
+Items[105] = ['5', 'ANANASS', '59', '8', 'items/a5c25d4f.jpg'];
+Items[106] = ['5', 'APELSIN', '35', '4', 'items/d47a3bde.jpg'];
+Items[107] = ['5', 'APRIKOOS', '20', '2', 'items/91e66f34.jpg'];
+Items[108] = ['5', 'AVAKAADO', '20', '1', 'items/f6dd87e6.jpg'];
+Items[109] = ['5', 'GRANAATÕUN', '35', '5', 'items/11381d1f.jpg'];
+Items[110] = ['5', 'GREIP', '25', '3', 'items/ece5cf64.jpg'];
+Items[111] = ['5', 'HURMAA', '50', '17', 'items/256fe288.jpg'];
+Items[112] = ['5', 'KIIVI', '53', '8', 'items/890d2c46.jpg'];
+Items[113] = ['5', 'KIRSS', '22', '3', 'items/e2f1e066.jpg'];
+Items[114] = ['5', 'LAIM', '29', '3', 'items/6e639176.jpg'];
+Items[115] = ['5', 'LITSI', '50', '9', 'items/fa7403c8.jpg'];
+Items[116] = ['5', 'MANDARIIN', '43', '6', 'items/316886ba.jpg'];
+Items[117] = ['5', 'MANGO', '51', '9', 'items/e277dc58.jpg'];
+Items[118] = ['5', 'MELON', '65', '6', 'items/7c1d9f32.jpg'];
+Items[119] = ['5', 'NEKTARIIN', '43', '5', 'items/62624009.jpg'];
+Items[120] = ['5', 'ÕUN', '40', '4', 'items/5b9d5bf9.jpg'];
+Items[121] = ['5', 'PIRN', '38', '4', 'items/0613782b.jpg'];
+Items[122] = ['5', 'PLOOM', '39', '4', 'items/14d55434.jpg'];
+Items[123] = ['5', 'POMELO', '30', '3', 'items/c5efa42d.jpg'];
+Items[124] = ['5', 'SIDRUN', '20', '2', 'items/99fc2d6e.jpg'];
+Items[125] = ['5', 'VIRSIK', '42', '4', 'items/031da7a5.jpg'];
+Items[126] = ['5', 'ARBUUS', '102', '71', 'items/f64741d8.jpg'];
+Items[127] = ['5', 'BANAAN', '65', '15', 'items/ed2c0afb.jpg'];
+Items[128] = ['5', 'PAPAIA', '59', '6', 'items/1b10aa86.jpg'];
+
+//TERAVILJAD
+Items[129] = ['6', 'BASMATI RIIS', '58', '14',  'items/cfcc54fe.jpg'];
+Items[130] = ['6', 'BULGUR', '48', '12', 'items/05916835.jpg'];
+Items[131] = ['6', 'HIINA NUUDLID', '35', 'items/11484d5e.jpg'];
+Items[132] = ['6', 'HIRSS', '71', '"9', '24"', 'items/ce9a690b.jpg'];
+Items[133] = ['6', 'IDUHELBED', '53', '-1', 'items/b27545f8.jpg'];
+Items[134] = ['6', 'KAER', '66', '13','items/3a42894b.jpg'];
+Items[135] = ['6', 'KARTULITÄRKLIS', '70', '"15', '8"', 'items/beca228f.jpg'];
+Items[136] = ['6', 'KINOA', '35', '13', 'items/a5f43073.jpg'];
+Items[137] = ['6', 'KLIID', '51', '12', 'items/1f8f9852.jpg'];
+Items[138] = ['6', 'KUSKUSS', '65', '9', 'items/35ad8b92.jpg'];
+Items[139] = ['6', 'MAIS', '35', '"8', '4"', 'items/928c8022.jpg'];
+Items[140] = ['6', 'MANNA', '85', '"14', '7"', 'items/e79e00a7.jpg'];
+Items[141] = ['6', 'METSIK RIIS', '57', '12', 'items/d0f631da.jpg'];
+Items[142] = ['6', 'MÜSLI', '80', '16', 'items/1b877382.jpg'];
+Items[143] = ['6', 'PANKOOGID', '70', '39', 'items/2e2257ea.jpg'];
+Items[144] = ['6', 'POPKORN', '85', '7', 'items/cd7b3d07.jpg'];
+Items[145] = ['6', 'PRUUN RIIS', '50', '16', 'items/cecd75ba.jpg'];
+Items[146] = ['6', 'PUNASED LÄÄTSED', '25', '7', 'items/70912468.jpg'];
+Items[147] = ['6', 'RIISIPUDER', '90', '43', 'items/11321037.jpg'];
+Items[148] = ['6', 'ROHELISED LÄÄT', '22', '7', 'items/1bd25405.jpg'];
+Items[149] = ['6', 'RUKIS', '34', '11', 'items/a4703eb1.jpg'];
+Items[150] = ['6', 'TAPIOKK', '80', '-1', 'items/54d6e452.jpg'];
+Items[151] = ['6', 'TATAR', '54', '"10', '7"', 'items/e875036b.jpg'];
+Items[152] = ['6', 'TERAVILJA HOMMIKUHELBED', '90', '5', 'items/acced6ea.jpg'];
+Items[153] = ['6', 'VALGERIIS', '70', '43', 'items/941fa376.jpg'];
+Items[154] = ['6', 'KRÕPSUD', '89', '-1', 'items/e3539871.jpg'];
+
+//PIIMATOODED
+Items[155] = ['7', 'SOJAPIIM', '38', '-1', 'items/8abaf5a9.jpg']
+Items[156] = ['7', 'PIIM, KOORITUD', '41', '-1', 'items/7cbf762d.jpg']
+Items[157] = ['7', 'PIIM, TÄISRASV', '42', '-1', 'items/4a5dcca0.jpg']
+Items[158] = ['7', 'JOGURT', '43', '-1', 'items/57dc9565.jpg']
+Items[159] = ['7', 'JÄÄTIS', '54', '-1', 'items/67de8095.jpg']
+Items[160] = ['7', 'RIISIPIIM', '93', '-1', 'items/5a4a9ae9.jpg']
+
+function l_dist(s1, s2) {
+	var lengthS1 = s1.length;
+	var lengthS2 = s2.length;
+	var tab = new Array();
+	tab.length = lengthS1 + 1;
+	for (i = 0; i <= lengthS1; i++) {
+		tab[i] = new Array();
+		tab[i].length = lengthS2 + 1;
+	}
+	var i, j, diff;
+	for (i = 0; i <= lengthS1; i++)
+		tab[i][0] = i;
+	for (j = 0; j <= lengthS2; j++)
+		tab[0][j] = j;
+	for (i = 1; i <= lengthS1; i++) {
+		for (j = 1; j <= lengthS2; j++) {
+			if (s1.charAt(i - 1) == s2.charAt(j - 1)) diff = 0;
+			else diff = 1;
+			tab[i][j] = Math.min(Math.min(tab[i - 1][j] + 1, tab[i][j - 1] + 1), tab[i - 1][j - 1] + diff);
+		}
+	}
+	return tab[lengthS1][lengthS2];
+}
+
+function find(){
+	document.getElementsByClassName('items')[0].style.display = 'none';
+	if (document.getElementById('search').value.trim() == '')
+		return;
+		
+	let Results = [];
+	SearchInput = document.getElementById('search').value.toLowerCase();
+	
+	ResultCount = 0;
+
+	for (let i = 0; i < Items.length; i++)
+		if (l_dist(Items[i][1].toLowerCase(), SearchInput) <= 2) {
+			Results[ResultCount] = [i, Items[i][2]];
+			ResultCount += 1;
+		}
+	
+	/*for (let i = 0; i < Results.length; i++)
+		for (let j = 0; j < Results.length; j++) {
+			if (i == j) continue;
+			if (parseFloat(Results[i][1]) < parseFloat(Results[j][1])) {
+				let ResTempIndex = Results[i][0];
+				let ResTempRang = Results[i][1];
+				
+				Results[i][0] = Results[j][0]; 
+				Results[i][1] = Results[j][1]; 
+				
+				Results[j][0] = ResTempIndex;
+				Results[j][1] = ResTempRang;
+			}
+				
+		}*/
+		
+	document.getElementsByClassName('items')[0].innerHTML = '';
+	for (let i = 0; i < Results.length; i++) {
+		document.getElementsByClassName('items')[0].innerHTML += '<div id="item" onclick="showItem(' + Results[i][0] + ')"><div id="title">' + Items[Results[i][0]][1] + '</div></div>';
+	}
+	
+	document.getElementsByClassName('main-content')[0].style.display = 'block';
+	if (Results.length > 0 && SearchInput.trim() != '')
+		document.getElementsByClassName('items')[0].style.display = 'block';
+	else
+		document.getElementsByClassName('main-title')[0].innerHTML = 'Ei leitud';
+}
+
+function showItem(n) {
+	document.getElementById('list').style.display = 'none';
+	document.getElementById('list4').style.display = 'none';
+	document.getElementById('list2').style.display = 'block';
+	document.getElementsByClassName('sub-title')[0].innerHTML = Items[n][1];
+	let ItemEl1 = Items[n][2];
+	let ItemEl2 = Items[n][3];
+	if (ItemEl1 == '-1') ItemEl1 = '?';
+	if (ItemEl2 == '-1') ItemEl2 = '?';
+	document.getElementById('gIndex').innerHTML = '<div style="text-align:center; font-weight:bold;">Glükeemiline indeks:</div><div style="font-size:30px; text-align:center;">' + ItemEl1 + '</div>';
+	document.getElementById('gWeight').innerHTML = '<div style="text-align:center; font-weight:bold;">Glükeemiline koormus:</div><div style="font-size:30px; text-align:center;">' + ItemEl2 + '</div>';
+	document.getElementById('photo').setAttribute('src', Items[n][4]);
+	if (Items[n][2] < 45) document.getElementById('gIndex').style.backgroundColor = '#49d214';
+	if (Items[n][2] >= 45 && Items[n][2] <= 70)	document.getElementById('gIndex').style.backgroundColor = '#ffea87';
+	if (Items[n][2] > 70) document.getElementById('gIndex').style.backgroundColor = '#f56363';
+}
+
+function showCatItems(n, str) {
+	document.getElementById('list3').style.display = 'none';
+	document.getElementById('list4').style.display = 'block';
+	document.getElementById('sub-title2').innerHTML = str;
+	document.getElementsByClassName('items2')[0].innerHTML = '';
+	
+	let Results = [];
+	ResultCount = 0;
+
+	for (let i = 0; i < Items.length; i++) {
+		if (Items[i][0] != n) continue;
+		Results[ResultCount] = [i, Items[i][2]];
+		ResultCount += 1;
+		console.log(Items[i][2]);
+	}
+	
+	for (let i = 0; i < Results.length; i++)
+		for (let j = 0; j < Results.length; j++) {
+			if (i == j) continue;
+			
+			if (parseFloat(Results[i][1]) < parseFloat(Results[j][1])) {
+				let ResTempIndex = Results[i][0];
+				let ResTempRang = Results[i][1];
+				
+				Results[i][0] = Results[j][0]; 
+				Results[i][1] = Results[j][1]; 
+				
+				Results[j][0] = ResTempIndex;
+				Results[j][1] = ResTempRang;
+			}
+				
+		}
+	
+	for (let i = 0; i < Results.length; i++)
+		console.log(Results[i][1])
+	
+	for (let i = 0; i < Results.length; i++) {
+		let ItemEl1 = Results[i][1];
+		
+		
+		let gIndexColor = 'black';
+		if (ItemEl1 < 45) gIndexColor = '#0a8216';
+		if (ItemEl1 >= 45 && ItemEl1 <= 70)	gIndexColor = '#ff971d';
+		if (ItemEl1 > 70) gIndexColor = '#ff1212';
+		
+		if (ItemEl1 == '-1') ItemEl1 = '?';
+		
+		document.getElementsByClassName('items2')[0].innerHTML += '<div id="item" onclick="showItem(' + Results[i][0] + ')">' + 
+		'<div id="title">' + Items[Results[i][0]][1] + '</div>' + 
+		'<div id="index" style="color:' + gIndexColor + '">' + ItemEl1 + '</div></div>';
+	}
+}
+
+function backToMain() {
+	document.getElementById('list3').style.display = 'none';
+	document.getElementById('list2').style.display = 'none';
+	document.getElementById('list').style.display = 'block';
+}
+
+function goToCategory() {
+	document.getElementById('list4').style.display = 'none';
+	document.getElementById('list').style.display = 'none';
+	document.getElementById('list3').style.display = 'block';
+}
+
+//Инициализация
+document.addEventListener('DOMContentLoaded', function(){
+	document.getElementsByClassName('items')[0].style.display = 'none';
+	document.getElementsByClassName('main-content')[0].style.display = 'none';
+});
+</script>
+</head>
+<body>
+<div id="wrapper">
+	<div id="list">
+		<div id="panel">
+			<div id="btn" onclick="goToCategory()"><img src="images/list.png" /></div>
+			<div class="title">GlükIN Äpp</div>
+			<div id="btn" style="visibility:hidden"><img src="images/back.png" /></div>			
+		</div>
+		<div id="panel-bg"></div>
+		
+		<div id="content">
+			<input type="text" id="search" placeholder="Sisestage tooted"/>
+			<div id="btn" onclick="find()">Otsing</div>
+		</div><br>
+		<div id="content" class="main-content">
+			<div id="title" class="main-title">Ostunimekiri</div>
+		</div>
+		<div id="items" class="items">
+			<div id="item" onclick="showItem(1)"><div id="title">Toote nimi</div></div>
+		</div>
+	</div>
+	
+	<div id="list2">
+		<div id="panel">
+			<div id="btn" onclick="backToMain()"><img src="images/back.png" /></div>
+			<div class="title">Toode</div>
+			<div id="btn" style="visibility:hidden"><img src="images/back.png" /></div>			
+		</div>
+		<div id="panel-bg"></div>
+		
+		<div id="content">
+			<div id="title" class="sub-title">Name</div>
+			<div id="image"><img src="" id="photo" /></div>
+			<div id="gIndex"></div>
+			<div id="gWeight"></div>
+		</div>
+	</div>
+	
+	<div id="list3">
+		<div id="panel">
+			<div id="btn" onclick="backToMain()"><img src="images/back.png" /></div>
+			<div class="title">Kategooriad</div>
+			<div id="btn" style="visibility:hidden"><img src="images/back.png" /></div>			
+		</div>
+		<div id="panel-bg"></div>
+		
+		<div id="content" class="main-content">
+			<div id="btn" onclick="showCatItems(0, 'JOOGID')">JOOGID</div>
+			<div id="btn" onclick="showCatItems(1, 'JAHUTOOTED')">JAHUTOOTED</div>
+			<div id="btn" onclick="showCatItems(2, 'KÖÖGIVILJAD')">KÖÖGIVILJAD</div>
+			<div id="btn" onclick="showCatItems(3, 'MAIUSTUSED')">MAIUSTUSED</div>
+			<div id="btn" onclick="showCatItems(4, 'MARJAD')">MARJAD</div>
+			<div id="btn" onclick="showCatItems(5, 'PUUVILJAD')">PUUVILJAD</div>
+			<div id="btn" onclick="showCatItems(6, 'TERAVILJAD')">TERAVILJAD</div>
+			<div id="btn" onclick="showCatItems(7, 'PIIMATOOTED')">PIIMATOOTED</div>
+		</div>
+	</div>
+	
+	<div id="list4">
+		<div id="panel">
+			<div id="btn" onclick="goToCategory()"><img src="images/back.png" /></div>
+			<div class="title" id="sub-title2">NAME</div>
+			<div id="btn" style="visibility:hidden"><img src="images/back.png" /></div>			
+		</div>
+		<div id="panel-bg"></div>
+		
+		<div id="list">
+			<div id="items" class="items2">
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
